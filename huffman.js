@@ -1,30 +1,31 @@
 // Huffman Coding Implementation in JavaScript
+
+// Heap Node class for Huffman tree
+class HeapNode {
+    constructor(char, freq) {
+        this.char = char;
+        this.freq = freq;
+        this.left = null;
+        this.right = null;
+    }
+
+    // Comparator for heap operations
+    lessThan(other) {
+        return this.freq < other.freq;
+    }
+
+    equals(other) {
+        if (other === null) return false;
+        if (!(other instanceof this.constructor)) return false;
+        return this.freq === other.freq;
+    }
+}
+
 class HuffmanCoding {
     constructor() {
         this.heap = [];
         this.codes = {};
         this.reverseMapping = {};
-    }
-
-    // Heap Node class for Huffman tree
-    class HeapNode {
-        constructor(char, freq) {
-            this.char = char;
-            this.freq = freq;
-            this.left = null;
-            this.right = null;
-        }
-
-        // Comparator for heap operations
-        lessThan(other) {
-            return this.freq < other.freq;
-        }
-
-        equals(other) {
-            if (other === null) return false;
-            if (!(other instanceof this.constructor)) return false;
-            return this.freq === other.freq;
-        }
     }
 
     // Create frequency dictionary from text
@@ -44,7 +45,7 @@ class HuffmanCoding {
     makeHeap(frequency) {
         this.heap = [];
         for (const key in frequency) {
-            const node = new this.HeapNode(key, frequency[key]);
+            const node = new HeapNode(key, frequency[key]);
             this.heap.push(node);
         }
         this.heap.sort((a, b) => a.freq - b.freq);
@@ -56,7 +57,7 @@ class HuffmanCoding {
             const node1 = this.heap.shift();
             const node2 = this.heap.shift();
 
-            const merged = new this.HeapNode(null, node1.freq + node2.freq);
+            const merged = new HeapNode(null, node1.freq + node2.freq);
             merged.left = node1;
             merged.right = node2;
 

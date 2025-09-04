@@ -15,17 +15,8 @@ class FileZipperApp {
         const uploadContainer = document.getElementById('uploadContainer');
 
         // Click to browse files
-        browseLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.addMysticalEffect(browseLink);
-            setTimeout(() => fileInput.click(), 300);
-        });
-        
-        uploadArea.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.addMysticalEffect(uploadArea);
-            setTimeout(() => fileInput.click(), 300);
-        });
+        browseLink.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('click', () => fileInput.click());
 
         // File input change
         fileInput.addEventListener('change', (e) => {
@@ -34,30 +25,23 @@ class FileZipperApp {
             }
         });
 
-        // Enhanced drag and drop functionality
+        // Drag and drop functionality
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             uploadArea.classList.add('dragover');
-            this.addMysticalEffect(uploadArea);
         });
 
         uploadArea.addEventListener('dragleave', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             uploadArea.classList.remove('dragover');
         });
 
         uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             uploadArea.classList.remove('dragover');
-            
-            const files = e.dataTransfer.files;
-            if (files && files.length > 0) {
-                const file = files[0];
-                this.addMysticalEffect(uploadArea);
-                setTimeout(() => this.handleFileSelect(file), 500);
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                this.handleFileSelect(file);
             }
         });
 
@@ -71,9 +55,6 @@ class FileZipperApp {
     handleFileSelect(file) {
         if (!file) return;
 
-        // Add mystical loading effect
-        this.showMysticalLoading('Channeling file energy...');
-
         // Validate file type
         const allowedTypes = [
             'text/plain', 'text/html', 'text/css', 'text/javascript',
@@ -84,25 +65,18 @@ class FileZipperApp {
         const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
         
         if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
-            this.hideMysticalLoading();
-            this.showError('The ancient texts do not recognize this file format. Please use sacred formats: TXT, PY, JS, HTML, CSS, JSON, MD, CSV, XML');
+            this.showError('Please select a supported text file (TXT, PY, JS, HTML, CSS, JSON, MD, CSV, XML)');
             return;
         }
 
         // Check file size (limit to 10MB)
         if (file.size > 10 * 1024 * 1024) {
-            this.hideMysticalLoading();
-            this.showError('The file\'s energy is too powerful! Please select a file smaller than 10MB.');
+            this.showError('File size too large. Please select a file smaller than 10MB.');
             return;
         }
 
-        // Simulate mystical processing
-        setTimeout(() => {
-            this.hideMysticalLoading();
-            this.currentFile = file;
-            this.displayFileInfo(file);
-            this.showSuccess('File successfully channeled into the mystical realm!');
-        }, 1000);
+        this.currentFile = file;
+        this.displayFileInfo(file);
     }
 
     displayFileInfo(file) {
@@ -287,133 +261,41 @@ class FileZipperApp {
     }
 
     showSuccess(message) {
-        // Create a mystical success notification
+        // Create a simple success notification
         const notification = document.createElement('div');
-        notification.className = 'mystical-success-notification';
+        notification.className = 'success-notification';
         notification.innerHTML = `
             <div style="
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(56, 142, 60, 0.9));
+                background: #4caf50;
                 color: white;
-                padding: 20px 25px;
-                border-radius: 15px;
-                box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 z-index: 1000;
                 max-width: 400px;
-                animation: mysticalSlideIn 0.5s ease;
-                border: 2px solid rgba(255, 255, 255, 0.2);
-                backdrop-filter: blur(10px);
+                animation: slideInRight 0.3s ease;
             ">
-                <i class="fas fa-magic" style="margin-right: 10px; color: #ffd700;"></i>
+                <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
                 ${message}
             </div>
         `;
         
         document.body.appendChild(notification);
         
-        // Remove after 4 seconds
+        // Remove after 3 seconds
         setTimeout(() => {
             if (notification.parentNode) {
-                notification.style.animation = 'mysticalSlideOut 0.5s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 500);
+                notification.parentNode.removeChild(notification);
             }
-        }, 4000);
+        }, 3000);
     }
 
-    addMysticalEffect(element) {
-        // Add mystical particle effect
-        const rect = element.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        for (let i = 0; i < 8; i++) {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: fixed;
-                width: 4px;
-                height: 4px;
-                background: radial-gradient(circle, #8a2be2, transparent);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 1000;
-                left: ${centerX}px;
-                top: ${centerY}px;
-                animation: mysticalParticleBurst 1s ease-out forwards;
-            `;
-            
-            const angle = (i / 8) * Math.PI * 2;
-            const distance = 50 + Math.random() * 30;
-            const endX = centerX + Math.cos(angle) * distance;
-            const endY = centerY + Math.sin(angle) * distance;
-            
-            particle.style.setProperty('--end-x', endX + 'px');
-            particle.style.setProperty('--end-y', endY + 'px');
-            
-            document.body.appendChild(particle);
-            
-            setTimeout(() => {
-                if (particle.parentNode) {
-                    particle.parentNode.removeChild(particle);
-                }
-            }, 1000);
-        }
-    }
-
-    showMysticalLoading(message) {
-        const loading = document.createElement('div');
-        loading.id = 'mysticalLoading';
-        loading.innerHTML = `
-            <div style="
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(26, 10, 46, 0.95);
-                color: #ffd700;
-                padding: 30px 40px;
-                border-radius: 20px;
-                box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
-                z-index: 2000;
-                text-align: center;
-                border: 2px solid rgba(138, 43, 226, 0.3);
-                backdrop-filter: blur(20px);
-            ">
-                <div style="
-                    width: 40px;
-                    height: 40px;
-                    border: 3px solid rgba(138, 43, 226, 0.3);
-                    border-top: 3px solid #8a2be2;
-                    border-radius: 50%;
-                    animation: mysticalSpin 1s linear infinite;
-                    margin: 0 auto 15px;
-                "></div>
-                <div style="font-family: 'Cinzel', serif; font-size: 1.1rem;">${message}</div>
-            </div>
-        `;
-        
-        document.body.appendChild(loading);
-    }
-
-    hideMysticalLoading() {
-        const loading = document.getElementById('mysticalLoading');
-        if (loading) {
-            loading.style.animation = 'mysticalFadeOut 0.5s ease';
-            setTimeout(() => {
-                if (loading.parentNode) {
-                    loading.parentNode.removeChild(loading);
-                }
-            }, 500);
-        }
-    }
 }
 
-// Add CSS animations for mystical effects
+// Add CSS animations for notifications
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideInRight {
@@ -424,55 +306,6 @@ style.textContent = `
         to {
             transform: translateX(0);
             opacity: 1;
-        }
-    }
-    
-    @keyframes mysticalSlideIn {
-        from {
-            transform: translateX(100%) scale(0.8);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0) scale(1);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes mysticalSlideOut {
-        from {
-            transform: translateX(0) scale(1);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%) scale(0.8);
-            opacity: 0;
-        }
-    }
-    
-    @keyframes mysticalParticleBurst {
-        0% {
-            transform: translate(0, 0) scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: translate(calc(var(--end-x) - var(--start-x)), calc(var(--end-y) - var(--start-y))) scale(0);
-            opacity: 0;
-        }
-    }
-    
-    @keyframes mysticalSpin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes mysticalFadeOut {
-        from {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        to {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.8);
         }
     }
 `;
