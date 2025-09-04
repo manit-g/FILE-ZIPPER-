@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Zipper by mg - Huffman Compression</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-file-archive"></i>
+                    <h1>File Zipper by mg</h1>
+                </div>
+                <p class="subtitle">Advanced Huffman Compression Tool</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-container" id="uploadContainer">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>Drop your file here</h3>
+                        <p>or <span class="browse-link" id="browseLink">browse to choose a file</span></p>
+                        <input type="file" id="fileInput" accept=".txt,.py,.js,.html,.css,.json,.md,.csv,.xml" hidden>
+                        <div class="supported-formats">
+                            <small>Supported: TXT, PY, JS, HTML, CSS, JSON, MD, CSV, XML</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- File Info Section -->
+            <section class="file-info-section" id="fileInfoSection" style="display: none;">
+                <div class="file-info-card">
+                    <div class="file-details">
+                        <div class="file-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="file-meta">
+                            <h4 id="fileName">filename.txt</h4>
+                            <p id="fileSize">0 KB</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="compressBtn">
+                        <i class="fas fa-compress-alt"></i>
+                        Compress File
+                    </button>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <h4>Compressing...</h4>
+                        <span id="progressText">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-details">
+                        <div class="detail-item">
+                            <span>Analyzing frequency...</span>
+                            <i class="fas fa-check" id="step1" style="display: none;"></i>
+                        </div>
+                        <div class="detail-item">
+                            <span>Building Huffman tree...</span>
+                            <i class="fas fa-check" id="step2" style="display: none;"></i>
+                        </div>
+                        <div class="detail-item">
+                            <span>Encoding data...</span>
+                            <i class="fas fa-check" id="step3" style="display: none;"></i>
+                        </div>
+                        <div class="detail-item">
+                            <span>Generating compressed file...</span>
+                            <i class="fas fa-check" id="step4" style="display: none;"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-card">
+                    <div class="results-header">
+                        <h3><i class="fas fa-check-circle"></i> Compression Complete!</h3>
+                    </div>
+                    <div class="compression-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Original Size</div>
+                            <div class="stat-value" id="originalSize">0 KB</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Compressed Size</div>
+                            <div class="stat-value" id="compressedSize">0 KB</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Compression Ratio</div>
+                            <div class="stat-value" id="compressionRatio">0%</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-success" id="downloadBtn">
+                            <i class="fas fa-download"></i>
+                            Download Compressed File
+                        </button>
+                        <button class="btn btn-secondary" id="decompressBtn">
+                            <i class="fas fa-expand-alt"></i>
+                            Test Decompression
+                        </button>
+                        <button class="btn btn-outline" id="newFileBtn">
+                            <i class="fas fa-plus"></i>
+                            Compress Another File
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="how-it-works">
+                <h2>How Huffman Compression Works</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Frequency Analysis</h4>
+                        <p>Analyzes the frequency of each character in your file</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>Tree Construction</h4>
+                        <p>Builds a Huffman tree based on character frequencies</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Encoding</h4>
+                        <p>Replaces characters with optimal binary codes</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4>Compression</h4>
+                        <p>Creates a compressed binary file with significant size reduction</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 File Zipper. Built with Huffman Coding Algorithm.</p>
+        </footer>
+    </div>
+
+    <script src="huffman.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
