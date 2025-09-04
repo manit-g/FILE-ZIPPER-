@@ -7,7 +7,11 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: radial-gradient(ellipse at center, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
+    background: 
+        radial-gradient(ellipse at center, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%),
+        linear-gradient(45deg, #0a0a0a, #1a0a2e, #16213e, #0a0a0a);
+    background-size: 100% 100%, 400% 400%;
+    animation: spaceBackground 20s ease-in-out infinite;
     min-height: 100vh;
     color: #e0e0e0;
     line-height: 1.6;
@@ -158,12 +162,29 @@ body {
 }
 
 .header-content {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(102, 126, 234, 0.2),
+        inset 0 0 50px rgba(102, 126, 234, 0.1);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+    animation: rotate 15s linear infinite;
+    z-index: -1;
 }
 
 .logo {
@@ -230,12 +251,29 @@ body {
 
 /* Upload Section */
 .upload-section {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(102, 126, 234, 0.2),
+        inset 0 0 50px rgba(102, 126, 234, 0.1);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.1), transparent);
+    animation: sectionGlow 6s ease-in-out infinite;
+    z-index: -1;
 }
 
 .upload-container {
@@ -246,22 +284,42 @@ body {
 
 .upload-area {
     border: 3px dashed rgba(102, 126, 234, 0.5);
-    border-radius: 15px;
+    border-radius: 20px;
     padding: 60px 40px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
+}
+
+.upload-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(102, 126, 234, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+}
+
+.upload-area:hover::before,
+.upload-area.dragover::before {
+    opacity: 1;
 }
 
 .upload-area:hover,
 .upload-area.dragover {
     border-color: #667eea;
     background: rgba(102, 126, 234, 0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+        0 20px 60px rgba(102, 126, 234, 0.4),
+        0 0 100px rgba(102, 126, 234, 0.2);
 }
 
 .upload-icon {
@@ -272,8 +330,9 @@ body {
 .upload-icon i {
     font-size: 4rem;
     color: #667eea;
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
     text-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+    animation: iconFloat 3s ease-in-out infinite;
 }
 
 .upload-pulse {
@@ -281,28 +340,31 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: radial-gradient(circle, rgba(102, 126, 234, 0.3), transparent);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
 }
 
 .upload-area:hover .upload-icon i {
-    transform: scale(1.1);
-    color: #764ba2;
-    text-shadow: 0 0 30px rgba(118, 75, 162, 0.8);
+    transform: scale(1.2) rotate(360deg);
+    color: #ffd700;
+    text-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
 }
 
 .upload-area h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
     color: #e0e0e0;
+    text-shadow: 0 0 10px rgba(224, 224, 224, 0.5);
+    animation: textGlow 3s ease-in-out infinite;
 }
 
 .upload-area p {
     color: #ccc;
     margin-bottom: 20px;
+    font-size: 1.1rem;
 }
 
 .browse-link {
@@ -311,10 +373,13 @@ body {
     cursor: pointer;
     text-decoration: underline;
     transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
 }
 
 .browse-link:hover {
-    color: #764ba2;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    transform: scale(1.05);
 }
 
 .supported-formats {
@@ -896,6 +961,33 @@ body {
     100% { 
         transform: translateY(100%);
         opacity: 0;
+    }
+}
+
+@keyframes spaceBackground {
+    0%, 100% { 
+        background-position: 0% 50%, 0% 0%;
+    }
+    50% { 
+        background-position: 100% 50%, 100% 100%;
+    }
+}
+
+@keyframes iconFloat {
+    0%, 100% { 
+        transform: translateY(0px);
+    }
+    50% { 
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes textGlow {
+    0%, 100% { 
+        text-shadow: 0 0 10px rgba(224, 224, 224, 0.5);
+    }
+    50% { 
+        text-shadow: 0 0 20px rgba(224, 224, 224, 0.8);
     }
 }
 

@@ -14,16 +14,38 @@ class FileZipperApp {
         const browseLink = document.getElementById('browseLink');
         const uploadContainer = document.getElementById('uploadContainer');
 
-        // Click to browse files
-        browseLink.addEventListener('click', () => fileInput.click());
-        uploadArea.addEventListener('click', () => fileInput.click());
+        // Debug: Check if elements exist
+        console.log('fileInput:', fileInput);
+        console.log('uploadArea:', uploadArea);
+        console.log('browseLink:', browseLink);
+
+        if (!fileInput) {
+            console.error('fileInput element not found!');
+            return;
+        }
+        if (!uploadArea) {
+            console.error('uploadArea element not found!');
+            return;
+        }
+        if (!browseLink) {
+            console.error('browseLink element not found!');
+            return;
+        }
+
+        // File input now covers the entire upload area, so no need for click handlers
+        console.log('File input is now covering the upload area - direct clicks should work');
 
         // File input change
         fileInput.addEventListener('change', (e) => {
+            console.log('File input changed:', e.target.files);
             if (e.target.files && e.target.files[0]) {
+                console.log('File selected:', e.target.files[0].name);
                 this.handleFileSelect(e.target.files[0]);
             }
         });
+
+        // File input is now positioned over the upload area
+        console.log('File input positioned over upload area - ready for direct clicks');
 
         // Drag and drop functionality
         uploadArea.addEventListener('dragover', (e) => {
