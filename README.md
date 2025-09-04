@@ -15,7 +15,9 @@ A beautiful, modern web application for file compression using the Huffman codin
 
 ## 🚀 Live Demo
 
-[Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/yourusername/file-zipper)
+**🌐 [https://filezipperbymg.netlify.app/](https://filezipperbymg.netlify.app/)**
+
+Experience the power of Huffman compression with our live web application!
 
 ## 🛠️ How It Works
 
@@ -37,50 +39,6 @@ A beautiful, modern web application for file compression using the Huffman codin
 - `.csv` - CSV data
 - `.xml` - XML documents
 
-## 📦 Installation & Deployment
-
-### Option 1: Deploy to Netlify (Recommended)
-
-1. **Fork this repository** or download the files
-2. **Connect to Netlify**:
-   - Go to [Netlify](https://netlify.com)
-   - Click "New site from Git"
-   - Connect your GitHub account
-   - Select this repository
-   - Deploy!
-
-3. **Your site is live!** Netlify will provide a custom URL
-
-### Option 2: Manual Deployment
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/file-zipper.git
-   cd file-zipper
-   ```
-
-2. **Serve locally** (for testing):
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   
-   # Using PHP
-   php -S localhost:8000
-   ```
-
-3. **Upload to any web hosting service**:
-   - Upload all files to your web server
-   - Ensure `index.html` is in the root directory
-
-### Option 3: GitHub Pages
-
-1. **Push to GitHub repository**
-2. **Enable GitHub Pages** in repository settings
-3. **Select source branch** (usually `main`)
-4. **Your site will be available** at `https://yourusername.github.io/repository-name`
 
 ## 🎯 Usage
 
