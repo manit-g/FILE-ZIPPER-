@@ -123,7 +123,7 @@ class HuffmanCoding {
     }
 
     // Main compression function
-    compress(text, progressCallback = null) {
+    compress(text, progressCallback = null, originalFilename = null) {
         return new Promise((resolve, reject) => {
             try {
                 // Step 1: Frequency analysis
@@ -150,14 +150,17 @@ class HuffmanCoding {
                 if (progressCallback) progressCallback(90, "Creating compressed file...");
                 const bytes = this.getByteArray(paddedEncodedText);
                 
+                // Step 7: Create complete file with metadata
+                const completeFile = this.createCompleteFile(bytes, originalFilename);
+                
                 if (progressCallback) progressCallback(100, "Compression complete!");
                 
                 // Create compressed data object
                 const compressedData = {
-                    bytes: bytes,
+                    bytes: completeFile,
                     originalSize: text.length,
-                    compressedSize: bytes.length,
-                    compressionRatio: ((text.length - bytes.length) / text.length * 100).toFixed(2),
+                    compressedSize: completeFile.length,
+                    compressionRatio: ((text.length - completeFile.length) / text.length * 100).toFixed(2),
                     codes: this.codes,
                     reverseMapping: this.reverseMapping
                 };
@@ -167,6 +170,31 @@ class HuffmanCoding {
                 reject(error);
             }
         });
+    }
+
+    // Create complete file with metadata
+    createCompleteFile(compressedBytes, originalFilename = null) {
+        // Create metadata object with reverse mapping and original filename
+        const metadata = {
+            reverseMapping: this.reverseMapping,
+            originalFilename: originalFilename || 'unknown.txt',
+            timestamp: new Date().toISOString()
+        };
+        
+        // Convert metadata to JSON string
+        const metadataString = JSON.stringify(metadata);
+        const metadataBytes = new TextEncoder().encode(metadataString);
+        
+        // Create separator (4 bytes of 0xFF)
+        const separator = new Uint8Array([0xFF, 0xFF, 0xFF, 0xFF]);
+        
+        // Combine metadata + separator + compressed data
+        const completeFile = new Uint8Array(metadataBytes.length + separator.length + compressedBytes.length);
+        completeFile.set(metadataBytes, 0);
+        completeFile.set(separator, metadataBytes.length);
+        completeFile.set(compressedBytes, metadataBytes.length + separator.length);
+        
+        return completeFile;
     }
 
     // Remove padding from encoded text

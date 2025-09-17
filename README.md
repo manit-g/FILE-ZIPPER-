@@ -82,18 +82,7 @@ file-zipper/
 └── README.md           # This file
 ```
 
-## 🎨 Customization
 
-### Changing Colors
-Edit the CSS variables in `styles.css`:
-```css
-:root {
-  --primary-color: #667eea;
-  --secondary-color: #764ba2;
-  --success-color: #4caf50;
-  --error-color: #f44336;
-}
-```
 
 ### Adding File Types
 Modify the `allowedTypes` array in `script.js`:
@@ -110,4 +99,3 @@ const allowedTypes = [
 
 ---
 
-**Made with ❤️ for efficient file compression**

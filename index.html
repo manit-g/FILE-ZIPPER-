@@ -55,6 +55,19 @@
                     <h1 class="glitch" data-text="File Zipper by MG">File Zipper by MG</h1>
                 </div>
                 <p class="subtitle typing-animation">Advanced Huffman Compression Tool</p>
+                
+                <!-- Mode Toggle -->
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="compressModeBtn">
+                        <i class="fas fa-compress-alt"></i>
+                        Compress
+                    </button>
+                    <button class="mode-btn" id="decompressModeBtn">
+                        <i class="fas fa-expand-alt"></i>
+                        Decompress
+                    </button>
+                </div>
+                
                 <div class="neon-line"></div>
             </div>
         </header>
@@ -66,14 +79,21 @@
                 <div class="upload-container" id="uploadContainer">
                     <div class="upload-area" id="uploadArea">
                         <div class="upload-icon">
-                            <i class="fas fa-cloud-upload-alt"></i>
+                            <i class="fas fa-cloud-upload-alt" id="uploadIcon"></i>
                             <div class="upload-pulse"></div>
                         </div>
-                        <h3>Drop your file here</h3>
+                        <h3 id="uploadTitle">Drop your file here</h3>
                         <p>or <span class="browse-link" id="browseLink">browse to choose a file</span></p>
                         <input type="file" id="fileInput" accept=".txt,.py,.js,.html,.css,.json,.md,.csv,.xml" style="margin: 20px; padding: 10px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
                         <div class="supported-formats">
-                            <small>Supported: TXT, PY, JS, HTML, CSS, JSON, MD, CSV, XML</small>
+                            <small id="supportedFormats">Supported: TXT, PY, JS, HTML, CSS, JSON, MD, CSV, XML</small>
+                            <div id="decompressHelp" style="display: none; margin-top: 10px; padding: 10px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 5px;">
+                                <small style="color: #ffc107;">
+                                    <i class="fas fa-info-circle"></i>
+                                    Note: Only .huff files created with this app can be decompressed. 
+                                    If you have an old .huff file, please re-compress the original file first.
+                                </small>
+                            </div>
                         </div>
                         <div class="upload-grid">
                             <div class="grid-line"></div>
@@ -90,16 +110,16 @@
                 <div class="file-info-card">
                     <div class="file-details">
                         <div class="file-icon">
-                            <i class="fas fa-file-alt"></i>
+                            <i class="fas fa-file-alt" id="fileIcon"></i>
                         </div>
                         <div class="file-meta">
                             <h4 id="fileName">filename.txt</h4>
                             <p id="fileSize">0 KB</p>
                         </div>
                     </div>
-                    <button class="btn btn-primary" id="compressBtn">
-                        <i class="fas fa-compress-alt"></i>
-                        Compress File
+                    <button class="btn btn-primary" id="actionBtn">
+                        <i class="fas fa-compress-alt" id="actionIcon"></i>
+                        <span id="actionText">Compress File</span>
                     </button>
                 </div>
             </section>
@@ -108,29 +128,35 @@
             <section class="progress-section" id="progressSection" style="display: none;">
                 <div class="progress-card">
                     <div class="progress-header">
-                        <h4>Compressing...</h4>
+                        <h4 id="progressTitle">Compressing...</h4>
                         <span id="progressText">0%</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <div class="progress-details">
+                    <div class="progress-details" id="progressDetails">
                         <div class="detail-item">
-                            <span>Analyzing frequency...</span>
+                            <span id="step1Text">Analyzing frequency...</span>
                             <i class="fas fa-check" id="step1" style="display: none;"></i>
                         </div>
                         <div class="detail-item">
-                            <span>Building Huffman tree...</span>
+                            <span id="step2Text">Building Huffman tree...</span>
                             <i class="fas fa-check" id="step2" style="display: none;"></i>
                         </div>
                         <div class="detail-item">
-                            <span>Encoding data...</span>
+                            <span id="step3Text">Encoding data...</span>
                             <i class="fas fa-check" id="step3" style="display: none;"></i>
                         </div>
                         <div class="detail-item">
-                            <span>Generating compressed file...</span>
+                            <span id="step4Text">Generating compressed file...</span>
                             <i class="fas fa-check" id="step4" style="display: none;"></i>
                         </div>
+                    </div>
+                    <div class="progress-actions" style="margin-top: 20px; text-align: center;">
+                        <button class="btn btn-outline" id="cancelBtn" style="display: none;">
+                            <i class="fas fa-times"></i>
+                            Cancel & Upload New File
+                        </button>
                     </div>
                 </div>
             </section>
@@ -139,34 +165,34 @@
             <section class="results-section" id="resultsSection" style="display: none;">
                 <div class="results-card">
                     <div class="results-header">
-                        <h3><i class="fas fa-check-circle"></i> Compression Complete!</h3>
+                        <h3><i class="fas fa-check-circle" id="resultIcon"></i> <span id="resultTitle">Compression Complete!</span></h3>
                     </div>
-                    <div class="compression-stats">
+                    <div class="compression-stats" id="statsContainer">
                         <div class="stat-item">
-                            <div class="stat-label">Original Size</div>
-                            <div class="stat-value" id="originalSize">0 KB</div>
+                            <div class="stat-label" id="stat1Label">Original Size</div>
+                            <div class="stat-value" id="stat1Value">0 KB</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">Compressed Size</div>
-                            <div class="stat-value" id="compressedSize">0 KB</div>
+                            <div class="stat-label" id="stat2Label">Compressed Size</div>
+                            <div class="stat-value" id="stat2Value">0 KB</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">Compression Ratio</div>
-                            <div class="stat-value" id="compressionRatio">0%</div>
+                            <div class="stat-label" id="stat3Label">Compression Ratio</div>
+                            <div class="stat-value" id="stat3Value">0%</div>
                         </div>
                     </div>
                     <div class="action-buttons">
                         <button class="btn btn-success" id="downloadBtn">
-                            <i class="fas fa-download"></i>
-                            Download Compressed File
+                            <i class="fas fa-download" id="downloadIcon"></i>
+                            <span id="downloadText">Download Compressed File</span>
                         </button>
-                        <button class="btn btn-secondary" id="decompressBtn">
+                        <button class="btn btn-secondary" id="testBtn" style="display: none;">
                             <i class="fas fa-expand-alt"></i>
                             Test Decompression
                         </button>
                         <button class="btn btn-outline" id="newFileBtn">
                             <i class="fas fa-plus"></i>
-                            Compress Another File
+                            <span id="newFileText">Compress Another File</span>
                         </button>
                     </div>
                 </div>
@@ -202,7 +228,12 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy;  File Zipper. Built with Huffman Coding Algorithm.</p>
+            <div class="footer-content">
+                <p>&copy; 2024 File Zipper. Built with Huffman Coding Algorithm.</p>
+                <div class="author-info">
+                    <p>Created by <a href="https://portfoliobymg.netlify.app/" target="_blank" rel="noopener noreferrer" class="author-link">MG</a></p>
+                </div>
+            </div>
         </footer>
     </div>
 
